@@ -124,7 +124,7 @@ class Sql:
          
         return game_list
  
-    def compare_total_w_avg_set_prediction_and_results(self, home_team, start_date, end_date):
+    def get_teams_scores_ou_total_within_time_range(self, start_date, end_date):
         game_list = []
         db = self.get_db_name()
         if db.endswith('.db'): # remove .db from database name
