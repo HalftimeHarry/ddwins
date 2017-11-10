@@ -5,7 +5,8 @@
 | (_| | (_| |\ V  V /| | | | \__ \
  \__,_|\__,_| \_/\_/ |_|_| |_|___/
                                   
-                                  
+   
+Added columns to the data base Prediction text, Prediction_Result text, Total_Result text                               
 
 The date range compares might fail:
 You probably will need to change the date format that 

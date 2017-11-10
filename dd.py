@@ -26,7 +26,7 @@ class game_menu(cmd.Cmd):
         " 2). Set date range\n" + \
         " 3). Set number of prior games\n" + \
         " 4). Get average total of prior games between date range\n" + \
-        " 5). Get Vegas total and set prediction\n" + \
+        " 5). Compare total to avg's and set prediction\n" + \
         " 6). Get games from home team between date range\n" + \
         " 7). Get last number of games from home team\n" + \
         '   Select a number to choose an item or "Q" to quit.\n'
@@ -64,7 +64,7 @@ class game_menu(cmd.Cmd):
     # Get Vegas total and set prediction 
     #--------------------------------------
     def do_5(self, line):
-        game_list = s.get_teams_scores_ou_total_within_time_range(s.start_date, s.end_date)
+        game_list = s.compare_total_w_avg_set_prediction_and_results(s.home_team, s.start_date, s.end_date)
         for g in game_list:
             print g
         self.game_interactive_menu()
