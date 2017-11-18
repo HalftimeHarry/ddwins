@@ -29,6 +29,10 @@ class game_menu(cmd.Cmd):
         " 5). Get Vegas total and set prediction\n" + \
         " 6). Get games from home team between date range\n" + \
         " 7). Get last number of games from home team\n" + \
+        " 8). Get OU total\n" + \
+        " 9). Targeted game details\n" + \
+        "10). All game details\n" + \
+        "11). Get home teams for season, week\n" + \
         '   Select a number to choose an item or "Q" to quit.\n'
      
     #--------------------------------------
@@ -90,7 +94,52 @@ class game_menu(cmd.Cmd):
         self.game_interactive_menu()
  
  
+    #--------------------------------------
+    # Get OU Total
+    #--------------------------------------
+    def do_8(self, line):
+ 
+        ou_total = s.get_closing_ou_total(s.home_team, s.end_date)
+        print "OU total:", ou_total
+        self.game_interactive_menu()
+ 
      
+    #--------------------------------------
+    # Get Targeted game details
+    #--------------------------------------
+    def do_9(self, line):
+ 
+        targeted_game = s.get_targeted_game_details(s.home_team, s.start_date, s.end_date)
+        print "Targeted game:", targeted_game
+        self.game_interactive_menu()
+ 
+ 
+    #--------------------------------------
+    # Get Targeted game details
+    #--------------------------------------
+    def do_10(self, line):
+ 
+        season = raw_input(" Enter season: ")
+        week = raw_input(" Enter week: ")
+        home_team_list = s.get_home_team_list_for_season_week(season, week)
+ 
+        for home_team in home_team_list:
+            targeted_game = s.get_targeted_game_details(home_team, s.start_date, s.end_date)
+            print "Targeted game:", targeted_game
+        self.game_interactive_menu()
+ 
+ 
+    #--------------------------------------
+    # Get home teams for season, week 
+    #--------------------------------------
+    def do_11(self, line):
+        season = raw_input(" Enter season: ")
+        week = raw_input(" Enter week: ")
+        home_team_list = s.get_home_team_list_for_season_week(season, week)
+        for g in home_team_list:
+            print g
+        self.game_interactive_menu()
+ 
     #--------------------------------------
     # Run
     #--------------------------------------

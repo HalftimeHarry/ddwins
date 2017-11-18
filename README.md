@@ -7,15 +7,12 @@
                                   
                                   
 
-The date range compares might fail:
-You probably will need to change the date format that 
-is saved in the db.
-1st check to see what date format is used in Sqlite3
-then the past_games.txt should be modified. 
+THIS SMASHING SYSTEM is ment to bring Vegas to ther knees!!!!
 
-Also the WeekX, "Week X" fields should be changed to "Week_X" (underscore added)
+Eventually the predition_generator will be used to make predictions.
 
-You can change the default of 'Not Set' to something else in the sql.py file:
-Ex. self.total = '45'
+The user will Select from a dropdown list the leauge, season and week then when the 
+submission occurs. A "log report will display in a pie chart formatt the past 
+or future results and pending options"
 
 

@@ -37,13 +37,16 @@ class Sql:
         self.db = db
         self.home_team = 'DAL'
         self.away_team = 'Not set'
+        self.week = 'Not set'
+        self.season = 'Not set'
         self.venue = 'Not set'
         self.start_date = '2015-11-01'
-        self.end_date = '2016-11-01'
+        self.end_date = '2016-10-30'
         self.total = 'Not set'
         self.closing_spred = 'Not set'
         self.closing_total = 'Not set'
         self.number_of_prior_games = '8'
+        self.recent_total_result = ''
  
     def clean_up(self):
         self.conn.commit()
@@ -63,6 +66,22 @@ class Sql:
             game_list.append(row)
  
         return game_list
+ 
+    def get_home_team_list_for_season_week(self, season, week):
+        home_team_list = []
+        print "Week:", week
+        print "Season:", season
+        db = self.get_db_name()
+        if db.endswith('.db'): # remove .db from database name
+            db = db[:-3]
+        cmd = 'SELECT Home_Team FROM ' + db + ' WHERE Season = "' + season + '" AND Week = "' + week + '";'
+        print cmd
+        self.c.execute(cmd)
+        rows = self.c.fetchall()
+        for row in rows:
+            home_team_list.append(row)
+ 
+        return home_team_list
  
     def get_games_from_home_team_between_date_range(self, home_team, start_date, end_date):
         home_game_list = []
@@ -100,6 +119,9 @@ class Sql:
             sum += score[0]
             sum += score[1]
          
+        self.recent_total_result = score_list[0][0] + score_list[0][1]
+        print "recent_total_result:", self.recent_total_result
+ 
         number_of_games = len(rows)
         print "number of games:", number_of_games
         average = sum / float(number_of_games)
@@ -148,6 +170,14 @@ class Sql:
     def set_home_team(self):
         self.home_team = raw_input(" Enter home team: ")
         return(self.home_team)
+        
+    def set_season (self):
+        self.season = raw_input(" Enter Season Example 2016-2017: ")
+        return(self.season)
+        
+    def set_week (self):
+        self.week = raw_input(" Enter Week Example 1: ")
+        return(self.week)
  
     def set_date_range(self):
         self.start_date = raw_input(" Enter start date (YYYY-MM-DD): ")
@@ -162,6 +192,59 @@ class Sql:
     def set_closing_ou_total(self):
         self.closing_total = raw_input(" Enter closing total: ")
  
+    def get_closing_ou_total(self, home_team, date):
+        '''Read from games.db to get ou_total from a particular game
+           and return that floating point number'''
+            
+        db = self.get_db_name()
+        if db.endswith('.db'): # remove .db from database name
+           db = db[:-3]
+ 
+        cmd = 'SELECT Closing_O_U_Total FROM ' + db + ' WHERE Home_Team = "' + home_team + '" AND Date = "' + date + '";'
+        print cmd
+        self.c.execute(cmd)
+        rows = self.c.fetchall()
+        for row in rows:
+            ou_total = row[0]
+            print "Vegas Total was:", ou_total
+            return ou_total
+ 
+    def get_targeted_game_details(self, home_team, start_date, end_date):
+        '''Read from games.db to get targeted game details
+           and return all game details '''
+            
+        average = self.get_average_total_of_prior_games_within_date_range(home_team, start_date, end_date)
+        total_ou = self.get_closing_ou_total(home_team, end_date)
+        print "Average: %02.1f, Vegas Total: %02.1f" % (average, total_ou)
+        # margin = total_ou - average
+        margin = average - total_ou
+        print "margin: %02.1f" % margin
+        print "Prediction was:",
+        if margin > 0:
+            print "over"
+        elif margin < 0:
+            print "under"
+        else:
+            print "Do not play"
+ 
+        print "Actual total:", self.recent_total_result
+        actual_margin = self.recent_total_result - margin
+        print "Prediction result:",
+        if margin > 0 and actual_margin > total_ou:
+            print "Correct Over"
+        if margin < 0 and actual_margin < total_ou:
+            print "Correct Under"
+        if margin > 0 and actual_margin < total_ou:
+            print "Wrong Over"
+        if margin < 0 and actual_margin > total_ou:
+            print "Wrong Under"
+        if margin > 0 and actual_margin == total_ou:
+            print "Pushed Over"
+        if margin > 0 and actual_margin == total_ou:
+            print "Pushed Under"
+        elif margin > 0 and actual_margin == total_ou:
+            print "Did not play the game"
+            
     def set_number_of_prior_games(self):
         self.number_of_prior_games = raw_input(" Enter number of prior games: ")
  
