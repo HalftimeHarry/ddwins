@@ -31,19 +31,14 @@ def get_week_parameters(season, week):
         If week is 8, then pick all games in current season and last
         8 games from previous season.
         
-        Since the week varible is only an int the function does not
-        know how to start from the previous season because it also needs
-        to know the season. I think the next step is to include the new arguments
-        and test.
-        
         '''
         
         
     start_season = season
-    if week >= 1:
-        start_week = week - 19
+    if week >= 2:
+        start_week = week - 2
     else:
-        start_week = week + 3
+        start_week = week + 2
         if season == '2016':
             start_season = '2015'
         elif season == '2015':
@@ -74,16 +69,6 @@ if __name__ == '__main__':
 
     for home_team in home_team_list:
         start_season, start_week = get_week_parameters(season, int(week))
-        print "DEBUG WEEK:", start_week
+        print "DE:", home_team
         targeted_game = s.get_targeted_game_details2(home_team, start_week, week)
         print "Targeted game:", targeted_game
-        
-    if start_week == -18:
-        wk = '1'
-        sea = "2015"
-        print '{} {}'.format('1', '2015')
-    if start_week == -17:
-        wk = '2'
-        sea = "2015"
-        print '{} will go in week and {} will go in season'.format('2', '2015')
- 

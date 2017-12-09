@@ -5,7 +5,7 @@ import sys
 import os
 import sql
  
-DD_VERSION = '0.2'
+DD_VERSION = '0.8'
  
 class game_menu(cmd.Cmd):
      
@@ -121,10 +121,11 @@ class game_menu(cmd.Cmd):
  
         season = raw_input(" Enter season: ")
         week = raw_input(" Enter week: ")
-        home_team_list = s.get_home_team_list_for_season_week(season, week)
+        end_date = raw_input(" Enter end date: ")
+        home_team_list = s.get_home_team_list_for_season_week(season, week, end_date)
  
         for home_team in home_team_list:
-            targeted_game = s.get_targeted_game_details(home_team, s.start_date, s.end_date)
+            targeted_game = s.get_targeted_game_details(home_team, s.start_date, end_date)
             print "Targeted game:", targeted_game
         self.game_interactive_menu()
  
@@ -135,7 +136,8 @@ class game_menu(cmd.Cmd):
     def do_11(self, line):
         season = raw_input(" Enter season: ")
         week = raw_input(" Enter week: ")
-        home_team_list = s.get_home_team_list_for_season_week(season, week)
+        end_date = raw_input(" Enter end date: ")
+        home_team_list = s.get_home_team_list_for_season_week(season, week, end_date)
         for g in home_team_list:
             print g
         self.game_interactive_menu()
