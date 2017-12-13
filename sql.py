@@ -1,4 +1,39 @@
 '''
+ARI: Arizona Cardinals
+ATL: Atlanta Falcons
+BAL: Baltimore Ravens
+BUF: Buffalo Bills
+CAR: Carolina Panthers
+CHI: Chicago Bears
+CIN: Cincinnati Bengals
+CLE: Cleveland Browns
+DAL: Dallas Cowboys
+DEN: Denver Broncos
+DET: Detroit Lions
+GB: Green Bay Packers
+HOU: Houston Texans
+IND: Indianapolis Colts
+JAX: Jacksonville Jaguars
+KC: Kansas City Chiefs
+LAC: Los Angeles Chargers
+LAR: Los Angeles Raiders
+MIA: Miami Dolphins
+MIN: Minnesota Vikings
+NE: New England Patriots
+NO: New Orleans Saints
+NYG: New York Giants
+NYJ: New York Jets
+OAK: Oakland Raiders
+PHI: Philadelphia Eagles
+PIT: Pittsburgh Steelers
+SD: San Diego Chargers
+SEA: Seattle Seahawks
+SF: San Francisco 49ers
+STL: Saint Louis Rams
+TB: Tampa Bay Buccaneers
+TEN Tennessee Titans
+WAS: Washington Redskins
+ 
 games.db columns
 ----------------
 Season,
@@ -47,10 +82,6 @@ class Sql:
         self.closing_total = 'Not set'
         self.number_of_prior_games = '8'
         self.recent_total_result = ''
-        self.start_week = 'Not set'
-        self.end_week = 'Not set'
-        self.start_season = 'Not set'
-        self.end_season = 'Not set'
  
     def clean_up(self):
         self.conn.commit()
@@ -58,6 +89,12 @@ class Sql:
  
     def get_db_name(self):
         return self.db
+ 
+    def get_week_parameters(season, week):
+        ''' Returns the start_season and start_week values
+            based on 8 home games prior to the input season 
+            and week arguments'''
+        pass
  
     def get_game_list(self, db, season, week):
         game_list = []
@@ -73,13 +110,13 @@ class Sql:
  
     def get_home_team_list_for_season_week2(self, season, week):
         home_team_list = []
-        print "Week:", week
-        print "Season:", season
+        #print "Week:", week
+        #print "Season:", season
         db = self.get_db_name()
         if db.endswith('.db'): # remove .db from database name
             db = db[:-3]
         cmd = 'SELECT Home_Team FROM ' + db + ' WHERE Season = "' + season + '" AND Week = "' + week + '";'
-        print cmd
+        #print cmd
         self.c.execute(cmd)
         rows = self.c.fetchall()
         for row in rows:
@@ -148,8 +185,8 @@ class Sql:
         print "number of games:", number_of_games
         average = sum / float(number_of_games)
         return average
-        
-    def get_average_total_of_prior_games_within_week_range(self, home_team, start_week, end_week):
+ 
+    def get_average_total_of_prior_games_within_week_range(self, home_team, season, week):
         '''Returns an average for the total score for the previous number of games'''
          
         score_list = []
@@ -157,24 +194,38 @@ class Sql:
         if db.endswith('.db'): # remove .db from database name
             db = db[:-3]
  
-        cmd = 'SELECT Away_Score, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Week >= "' + str(start_week) + '" AND Week <= "' + str(end_week) + '" ORDER BY Week DESC;'
-        print cmd
+        # cmd = 'SELECT Away_Team, Away_Score, Home_Team, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Season <= "' + season + '" AND Week <= "' + week + '" ORDER BY Date DESC LIMIT 8;'
+        cmd = 'SELECT Away_Score, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Season = "' + season + '" AND Week <= "' + week + '" ORDER BY Date DESC;'
+        #print cmd
         self.c.execute(cmd)
         rows = self.c.fetchall()
         for row in rows:
+            #print row
             score_list.append(row)
          
-        print score_list
+        if int(season) > 2015:
+            cmd = 'SELECT Away_Score, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Season = "' + str(int(season) - 1) + '" ORDER BY Date DESC;'
+            #print cmd
+            self.c.execute(cmd)
+            rows = self.c.fetchall()
+            for row in rows:
+                #print row
+                score_list.append(row)
+ 
+        #print score_list
+        #print "len:", len(score_list)
+        score_list = score_list[0:8] # Only use the prior 8 games
+ 
         sum = 0
         for score in score_list:
             sum += score[0]
             sum += score[1]
          
         self.recent_total_result = score_list[0][0] + score_list[0][1]
-        print "recent_total_result:", self.recent_total_result
+        #print "recent_total_result:", self.recent_total_result
  
         number_of_games = len(rows)
-        print "number of games:", number_of_games
+        #print "number of games:", number_of_games
         average = sum / float(number_of_games)
         return average
  
@@ -244,16 +295,16 @@ class Sql:
            db = db[:-3]
  
         cmd = 'SELECT Closing_O_U_Total FROM ' + db + ' WHERE Home_Team = "' + home_team + '" AND Date <= "' + date + '";'
-        print cmd
+        #print cmd
         self.c.execute(cmd)
         rows = self.c.fetchall()
-        print "Rows:", rows
+        #print "Rows:", rows
         for row in rows:
             ou_total = row[0]
-            print "ou_total:", ou_total
+            #print "ou_total:", ou_total
             return ou_total
-            
-    def get_closing_ou_total2(self, home_team, end_week):
+ 
+    def get_closing_ou_total2(self, home_team, season, week):
         '''Read from games.db to get ou_total from a particular game
            and return that floating point number'''
             
@@ -261,21 +312,21 @@ class Sql:
         if db.endswith('.db'): # remove .db from database name
            db = db[:-3]
  
-        cmd = 'SELECT Closing_O_U_Total FROM ' + db + ' WHERE Home_Team = "' + home_team + '" AND Week <= "' + end_week + '";'
-        print cmd
+        cmd = 'SELECT Closing_O_U_Total FROM ' + db + ' WHERE Home_Team = "' + home_team + '" AND Season = "' + season +  '" AND Week = "' + week + '";'
+        #print cmd
         self.c.execute(cmd)
         rows = self.c.fetchall()
-        print "Rows:", rows
+        #print "Rows:", rows
         for row in rows:
             ou_total = row[0]
-            print "ou_total:", ou_total
+            #print "ou_total:", ou_total
             return ou_total
  
-    def get_targeted_game_details(self, home_team, start_date, end_date):
+    def get_targeted_game_details2(self, home_team, start_date, end_date):
         '''Read from games.db to get targeted game details
            and return all game details '''
             
-        average = self.get_average_total_of_prior_games_within_date_range(home_team, start_date, end_date)
+        average = self.get_average_total_of_prior_games_within_week_range(home_team, start_date, end_date)
         ou_total = self.get_closing_ou_total(home_team, end_date)
         print "average:", average
         print "ou_total:", ou_total
@@ -291,62 +342,32 @@ class Sql:
         else:
             print "Do not play"
  
-            print "Actual total:", self.recent_total_result
+        print "Actual total:", self.recent_total_result
         actual_margin = self.recent_total_result - margin
-        print "Prediction result:",
-        if margin > 0 and actual_margin > ou_total:
-            print "Correct Over"
-        if margin < 0 and actual_margin < ou_total:
-            print "Correct Under"
-        if margin > 0 and actual_margin < ou_total:
-            print "Wrong Over"
-        if margin < 0 and actual_margin > ou_total:
-            print "Wrong Under"
-        if margin > 0 and actual_margin == ou_total:
-            print "Pushed Over"
-        if margin > 0 and actual_margin == ou_total:
-            print "Pushed Under"
-        elif margin > 0 and actual_margin == ou_total:
-            print "Did not play the game"
+        if actual_margin < 0:
+            print "Correct"
+        elif actual_margin >= 0:
+            print "Wrong"
  
-    def get_targeted_game_details2(self, home_team, start_week, end_week):
+    def get_targeted_game_details3(self, home_team, season, week):
         '''Read from games.db to get targeted game details
-           and return all home teams going back from the end week'''
+           and return all game details '''
             
-        average = self.get_average_total_of_prior_games_within_week_range(home_team, start_week, end_week)
-        ou_total = self.get_closing_ou_total2(home_team, end_week)
-        print "average:", average
-        print "ou_total:", ou_total
-        print "Average: %02.1f, Total OU: %02.1f" % (average, ou_total)
+        details = {}
+ 
+        average = self.get_average_total_of_prior_games_within_week_range(home_team, season, week)
+        details['average'] = average
+        ou_total = self.get_closing_ou_total2(home_team, season, week)
+        details['ou_total'] = ou_total
+        #print "average:", average
+        #print "ou_total:", ou_total
+        #print "Average: %02.1f, Total OU: %02.1f" % (average, ou_total)
         # margin = ou_total - average
         margin = average - ou_total
-        print "margin: %02.1f" % margin
-        print "Predicted:",
-        if margin > 0:
-            print "over"
-        elif margin < 0:
-            print "under"
-        else:
-            print "Do not play"
- 
-            print "Actual total:", self.recent_total_result
-        actual_margin = self.recent_total_result - margin
-        print "Prediction result:",
-        if margin > 0 and actual_margin > ou_total:
-            print "Correct Over"
-        if margin < 0 and actual_margin < ou_total:
-            print "Correct Under"
-        if margin > 0 and actual_margin < ou_total:
-            print "Wrong Over"
-        if margin < 0 and actual_margin > ou_total:
-            print "Wrong Under"
-        if margin > 0 and actual_margin == ou_total:
-            print "Pushed Over"
-        if margin > 0 and actual_margin == ou_total:
-            print "Pushed Under"
-        elif margin > 0 and actual_margin == ou_total:
-            print "Did not play the game"
- 
+        details['margin'] = margin
+        details['actual_total'] =  self.recent_total_result
+        details['actual_margin'] = self.recent_total_result - margin
+        return details
  
     def set_number_of_prior_games(self):
         self.number_of_prior_games = raw_input(" Enter number of prior games: ")
@@ -357,7 +378,7 @@ class Sql:
 if __name__ == '__main__':
      
     s = Sql('games.db')
-    gl = s.get_game_list('games', 2016, 8)
+    gl = s.get_game_list('games', '2015-2016', '7')
     for g in gl:
         print g
     s.clean_up

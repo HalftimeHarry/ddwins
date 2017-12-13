@@ -4,7 +4,7 @@ import datetime
 import time
 import argparse
  
-PRED_GEN_VERSION = '0.5'
+PRED_GEN_VERSION = '0.4'
  
  
 '''
@@ -14,41 +14,25 @@ input arguments: Date to run. The result column only shows up if the date select
 was from the past.
  
 Output:
-    Home team  Prediction    margin      result
-    ---------------------------------------------
-       DAL         over        4          correct
-       ATL         under       -5         wrong
+
+Season: 2016, Week: 17
+Home team list for week: 17
+['ATL', 'MIN', 'IND', 'PHI', 'DET', 'MIA', 'NYJ', 'TAM', 'WAS', 'TEN', 'CIN', 'PIT', 'LAC', 'DEN', 'SFO', 'LAR']
+Home team  Prediction  Predicted result  Actual total  Margin  Calc Avg  Vegas Line
+   ATL       Over        Correct Over         70        4.2      62.8       58.5         Past Game
+   MIN       Under       Wrong Under          48        -8.3     35.7       44.0         Past Game
+   IND       Under       Correct Under        44        -1.4     47.1       48.5         Past Game
+   
+   Correct Over 44
+   Wrong Over 22
+   Correct Under 55
+   Wrong Under 21
+   Off 3
+   
+   
  
 '''
  
- 
-def get_week_parameters(season, week):
-    ''' Returns the start_season, start_week values
-        based on the input season and week arguments.
-        You probably need to do 2 db queries. 1 for each season
-        then join the results.
-        
-        If week is 8, then pick all games in current season and last
-        8 games from previous season.
-        
-        Since the week varible is only an int the function does not
-        know how to start from the previous season because it also needs
-        to know the season. I think the next step is to include the new arguments
-        and test.
-        
-        '''
-        
-        
-    start_season = season
-    if week >= 1:
-        start_week = week - 19
-    else:
-        start_week = week + 3
-        if season == '2016':
-            start_season = '2015'
-        elif season == '2015':
-            start_season = '2014'
-    return(start_season, start_week)
  
  
  
@@ -66,24 +50,52 @@ if __name__ == '__main__':
     season, week = [args.season, args.week]
      
  
-    print "Season: %s, Week: %s" % (season, week)
+    print "\nSeason: %s, Week: %s" % (season, week)
  
      
     home_team_list = s.get_home_team_list_for_season_week2(season, week)
+    print "Home team list for week:", week
     print home_team_list
-
-    for home_team in home_team_list:
-        start_season, start_week = get_week_parameters(season, int(week))
-        print "DEBUG WEEK:", start_week
-        targeted_game = s.get_targeted_game_details2(home_team, start_week, week)
-        print "Targeted game:", targeted_game
-        
-    if start_week == -18:
-        wk = '1'
-        sea = "2015"
-        print '{} {}'.format('1', '2015')
-    if start_week == -17:
-        wk = '2'
-        sea = "2015"
-        print '{} will go in week and {} will go in season'.format('2', '2015')
  
+    print "Home team  Prediction  Predicted result  Actual total  Margin  Calc Avg  Vegas Line"
+    for home_team in home_team_list:
+        details = s.get_targeted_game_details3(home_team, season, week)
+         
+        #print "Home team:", home_team
+#        print "Details:", details
+         
+        #print "Predicted:",
+        if details['margin'] > 0:
+            prediction = "Over"
+        elif details['margin'] < 0:
+            prediction = "Under"
+        else:
+            prediction = "Dont play"
+  
+        predicted_result = "No Action"
+ #       print "Predicted:",
+        if details['margin'] > 0 and details['actual_total'] > details['ou_total']:
+            predicted_result = "Correct Over"
+        if details['margin'] < 0 and details['actual_total'] < details['ou_total']:
+            predicted_result = "Correct Under"
+        if details['margin'] > 0 and details['actual_total'] < details['ou_total']:
+            predicted_result = "Wrong Over"
+        if details['margin'] < 0 and details['actual_total'] > details['ou_total']:
+            predicted_result = "Wrong Under"
+        if details['margin'] > 0 and details['actual_total'] == details['ou_total']:
+            predicted_result = "Pushed Over"
+        if details['margin'] > 0 and details['actual_total'] == details['ou_total']:
+            predicted_result = "Pushed Under"
+        elif details['margin'] > 0 and details['actual_total'] == details['ou_total']:
+            predicted_result = "Did not play"
+ 
+#        print "Actual total:", details['actual_total']
+#        print "Actual margin:", details['average']
+        if details['actual_total'] == '0':
+            final_result = "Pending Game"
+        elif details['average'] >= 0:
+            final_result = "Past Game"
+            
+ 
+ 
+        print "   %s\t     %s\t %s\t      %d\t%02.1f\t %02.1f\t    %02.1f         %s" % (home_team, prediction, predicted_result, details['actual_total'], details['margin'], details['average'], details['ou_total'], final_result)
