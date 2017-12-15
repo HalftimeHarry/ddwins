@@ -109,7 +109,10 @@ class game_menu(cmd.Cmd):
     #--------------------------------------
     def do_9(self, line):
  
-        targeted_game = s.get_targeted_game_details(s.home_team, s.start_date, s.end_date)
+        home_team = raw_input(" Enter Home Team: ")
+        season = raw_input(" Enter season: ")
+        week = raw_input(" Enter week: ")
+        targeted_game = s.get_average_total_of_prior_games_within_week_range(home_team, season, week)
         print "Targeted game:", targeted_game
         self.game_interactive_menu()
  

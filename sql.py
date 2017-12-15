@@ -214,8 +214,9 @@ class Sql:
  
         #print score_list
         #print "len:", len(score_list)
-        score_list = score_list[0:8] # Only use the prior 8 games
- 
+        score_list = score_list[1:9] # Only use the prior 8 games
+        #print score_list
+        
         sum = 0
         for score in score_list:
             sum += score[0]

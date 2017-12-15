@@ -4,7 +4,7 @@ import datetime
 import time
 import argparse
  
-PRED_GEN_VERSION = '0.4'
+PRED_GEN_VERSION = '0.5'
  
  
 '''
@@ -14,7 +14,6 @@ input arguments: Date to run. The result column only shows up if the date select
 was from the past.
  
 Output:
-
 Season: 2016, Week: 17
 Home team list for week: 17
 ['ATL', 'MIN', 'IND', 'PHI', 'DET', 'MIA', 'NYJ', 'TAM', 'WAS', 'TEN', 'CIN', 'PIT', 'LAC', 'DEN', 'SFO', 'LAR']
@@ -48,8 +47,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
      
     season, week = [args.season, args.week]
-     
- 
+    
+
     print "\nSeason: %s, Week: %s" % (season, week)
  
      
@@ -58,6 +57,14 @@ if __name__ == '__main__':
     print home_team_list
  
     print "Home team  Prediction  Predicted result  Actual total  Margin  Calc Avg  Vegas Line"
+    over_correct_cnt = 0
+    over_wrong_cnt = 0
+    under_correct_cnt = 0
+    under_wrong_cnt = 0
+    did_not_play_cnt = 0
+    over_pushed_cnt = 0
+    under_pushed_cnt = 0
+    
     for home_team in home_team_list:
         details = s.get_targeted_game_details3(home_team, season, week)
          
@@ -74,28 +81,42 @@ if __name__ == '__main__':
   
         predicted_result = "No Action"
  #       print "Predicted:",
+ 
+        
         if details['margin'] > 0 and details['actual_total'] > details['ou_total']:
             predicted_result = "Correct Over"
+            over_correct_cnt += 1
         if details['margin'] < 0 and details['actual_total'] < details['ou_total']:
             predicted_result = "Correct Under"
+            under_correct_cnt += 1
         if details['margin'] > 0 and details['actual_total'] < details['ou_total']:
             predicted_result = "Wrong Over"
+            over_wrong_cnt += 1
         if details['margin'] < 0 and details['actual_total'] > details['ou_total']:
             predicted_result = "Wrong Under"
+            under_wrong_cnt += 1
         if details['margin'] > 0 and details['actual_total'] == details['ou_total']:
             predicted_result = "Pushed Over"
+            over_pushed_cnt += 1
         if details['margin'] > 0 and details['actual_total'] == details['ou_total']:
             predicted_result = "Pushed Under"
+            under_pushed_cnt += 1
         elif details['margin'] > 0 and details['actual_total'] == details['ou_total']:
             predicted_result = "Did not play"
- 
+            did_not_play_cnt += 1
 #        print "Actual total:", details['actual_total']
 #        print "Actual margin:", details['average']
         if details['actual_total'] == '0':
             final_result = "Pending Game"
         elif details['average'] >= 0:
             final_result = "Past Game"
-            
- 
  
         print "   %s\t     %s\t %s\t      %d\t%02.1f\t %02.1f\t    %02.1f         %s" % (home_team, prediction, predicted_result, details['actual_total'], details['margin'], details['average'], details['ou_total'], final_result)
+
+    print "over correct this week", over_correct_cnt
+    print "under correct this week", under_correct_cnt
+    print "over wrong this week", over_wrong_cnt
+    print "under wrong this week", under_wrong_cnt
+    print "did not play this week", did_not_play_cnt
+    print "over pushed this week", over_pushed_cnt
+    print "under pushed this week", under_pushed_cnt
