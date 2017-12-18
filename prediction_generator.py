@@ -79,7 +79,7 @@ if __name__ == '__main__':
         else:
             prediction = "Dont play"
   
-        predicted_result = "No Action"
+        predicted_result = "Fix"
  #       print "Predicted:",
  
         

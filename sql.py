@@ -212,13 +212,14 @@ class Sql:
                 #print row
                 score_list.append(row)
  
-        #print score_list
+        b = score_list
         #print "len:", len(score_list)
-        score_list = score_list[1:9] # Only use the prior 8 games
-        #print score_list
+        score_list = score_list[0:8] # Only use the prior 8 games
+        score_list_b = b[1:9] # Only use the prior 8 games and this will exclude the 1st score
+        #print score_list_b
         
         sum = 0
-        for score in score_list:
+        for score in score_list_b:
             sum += score[0]
             sum += score[1]
          
@@ -226,7 +227,7 @@ class Sql:
         #print "recent_total_result:", self.recent_total_result
  
         number_of_games = len(rows)
-        #print "number of games:", number_of_games
+        #print "sum:", sum
         average = sum / float(number_of_games)
         return average
  
