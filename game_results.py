@@ -10,11 +10,17 @@ c = conn.cursor()
 # Create table
 c.execute('''CREATE TABLE IF NOT EXISTS game_results
              (home_team text, 
-              end_date text, 
-              o_u_diff float
+              season int, 
+              week int, 
+              over_correct_cnt int,
+              under_correct_cnt int,
+              over_wrong_cnt int,
+              under_wrong_cnt int,
+              did_not_play_cnt int,
+              over_pushed_cnt int, 
+              under_pushed_cnt int
              )''')
               
- 
  
 # Save (commit) the changes
 conn.commit()

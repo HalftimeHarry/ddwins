@@ -203,7 +203,7 @@ class Sql:
             #print row
             score_list.append(row)
          
-        if int(season) > 2015:
+        if int(season) > 2014:
             cmd = 'SELECT Away_Score, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Season = "' + str(int(season) - 1) + '" ORDER BY Date DESC;'
             #print cmd
             self.c.execute(cmd)
@@ -216,19 +216,21 @@ class Sql:
         #print "len:", len(score_list)
         score_list = score_list[0:8] # Only use the prior 8 games
         score_list_b = b[1:9] # Only use the prior 8 games and this will exclude the 1st score
-        #print score_list_b
-        
+#        print score_list_b
+         
         sum = 0
         for score in score_list_b:
             sum += score[0]
             sum += score[1]
-         
-        self.recent_total_result = score_list[0][0] + score_list[0][1]
-        #print "recent_total_result:", self.recent_total_result
  
+        self.recent_total_result = score_list[0][0] + score_list[0][1]
+#        print "Home team:", home_team
+#        print "recent_total_result:", self.recent_total_result
+        x = 8
         number_of_games = len(rows)
-        #print "sum:", sum
-        average = sum / float(number_of_games)
+#        print "number_of_games:", number_of_games
+#        print "test x", x use this when doing Football
+        average = sum / float(x)
         return average
  
     # def get_last_number_of_games_from_home_team_within_date_range(self, home_team, number_of_prior_games, start_date, end_date):
