@@ -5,7 +5,7 @@ import sys
 import os
 import sql
  
-DD_VERSION = '0.8'
+DD_VERSION = '0.6'
  
 class game_menu(cmd.Cmd):
      

@@ -5,7 +5,7 @@ import time
 import argparse
 import sqlite3
   
-PRED_GEN_VERSION = '0.6'
+PRED_GEN_VERSION = '0.7'
   
   
 '''
