@@ -5,7 +5,7 @@ import time
 import argparse
 import sqlite3
   
-PRED_GEN_VERSION = '0.7'
+PRED_GEN_VERSION = '0.5'
   
   
 '''
@@ -103,6 +103,9 @@ if __name__ == '__main__':
         if details['margin'] > 0 and float(details['actual_total']) == details['ou_total']:
             predicted_result = "Pushed Over"
             over_pushed_cnt += 1
+        if details['margin'] > 0 and float(details['actual_total']) == details['ou_total']:
+            predicted_result = "Pushed Under"
+            under_pushed_cnt += 1
         if details['margin'] < 0 and float(details['actual_total']) == details['ou_total']:
             predicted_result = "Pushed Under"
             under_pushed_cnt += 1
