@@ -216,7 +216,7 @@ class Sql:
         #print "len:", len(score_list)
         score_list = score_list[0:8] # Only use the prior 8 games
         score_list_b = b[1:9] # Only use the prior 8 games and this will exclude the 1st score
-#        print score_list_b
+        print score_list_b
          
         sum = 0
         for score in score_list_b:

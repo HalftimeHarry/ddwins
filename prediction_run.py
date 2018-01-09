@@ -1,3 +1,20 @@
+"""
+====================================================================
+
+Use past data to build this
+
+Create this
+
+Vegas Streak          Totals           Teams Played        Harrys Ratings  Coaching       How Hary Did           What does Harry have
+
+   LAR             Over Over Over       DAL  DEN  ATL      Like          No opinion     Correct Wrong Correct        Over
+   DAL             Over Under Under     LAR  BUF  CAR      Dont Like     Do not like    Correct Wrong Wrong          Under
+   PHI             Under Under Over     BAL  SEA  PIT      No Opinion    Nutrual        Correct Correct Correct      Under
+
+
+
+====================================================================
+"""
 import os
 import sys
 import sqlite3

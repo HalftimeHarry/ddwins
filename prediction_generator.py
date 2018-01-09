@@ -57,7 +57,7 @@ if __name__ == '__main__':
     print "Home team list for week:", week
     print home_team_list
   
-    print "Home team  Prediction  Predicted result  Actual total  Margin  Calc Avg  Vegas Line"
+    print "Home team  Prediction  Predicted result  Actual total  Margin  Calc Avg  Vegas Line   Past or Pending"
     over_correct_cnt = 0
     over_wrong_cnt = 0
     under_correct_cnt = 0

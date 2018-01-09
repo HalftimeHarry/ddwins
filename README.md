@@ -46,13 +46,11 @@ stage one of a many goals
 
 ____Predict more winners than loses
 
-____Be able to extract info and compare results via multipule conditions
-
 ____Set up for other sports
 
 ____Use API for line feeds and update the scores automatically 
 
-Next steps look into putting in college bowl gammes in.
+Steps to automated data from api's
 
 Step 1
 
@@ -68,10 +66,11 @@ print out some data you want to filter in on
 
 for example
 
-create this
+____Be able to extract info and compare results via results.db
 
-Vegas Streak          Totals           Teams Played        Harrys Ratings  Coaching       How Hary Did           What does Harry have
+Vegas Streak          Totals           Teams Played        Harrys Ratings  Coaching        How Hary Did           What does Harry have
 
-   LAR             Over Over Over       DAL  DEN  ATL      Like          No opinion     Correct Wrong Correct        Over
-   DAL             Over Under Under     LAR  BUF  CAR      Dont Like     Do not like    Correct Wrong Wrong          Under
-   PHI             Under Under Over     BAL  SEA  PIT      No Opinion    Nutrual        Correct Correct Correct      Under
+   LAR             Over Over Over       CLE  DEN  ATL      Like             No opinion     Correct Wrong Correct        Over
+   DAL             Under Under Under    KAN  BUF  CAR      Dont Like        Do not like    Correct Wrong Wrong          Under
+   PHI             Over Over Over       BAL  SEA  PIT      No Opinion       Nutrual        Correct Correct Correct      Under
+   PHI             Over Over Over       SEA  PIT  LAC      No Opinion       Nutrual        Correct Correct Correct      Under
