@@ -17,7 +17,7 @@ if __name__ == '__main__':
 #    for season in [2015, 2016, 2017]:
     for season in [2017]:
         print "\nSeason:", season
-        for week in range(15, 16):
+        for week in range(18, 19):
              
             #print season, week
             os.system("python prediction_generator.py " + '-s ' + str(season) + ' -w ' + str(week))
