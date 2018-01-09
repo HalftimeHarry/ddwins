@@ -1,17 +1,14 @@
 """
 ====================================================================
 
-Use past data to build this
+____Be able to extract info and compare results via results.db
 
-Create this
+Vegas Streak          Totals           Teams Played        Harrys Ratings  Coaching        How Hary Did           What does Harry have
 
-Vegas Streak          Totals           Teams Played        Harrys Ratings  Coaching       How Hary Did           What does Harry have
-
-   LAR             Over Over Over       DAL  DEN  ATL      Like          No opinion     Correct Wrong Correct        Over
-   DAL             Over Under Under     LAR  BUF  CAR      Dont Like     Do not like    Correct Wrong Wrong          Under
-   PHI             Under Under Over     BAL  SEA  PIT      No Opinion    Nutrual        Correct Correct Correct      Under
-
-
+   LAR             Over Over Over       CLE  DEN  ATL      Like             No opinion     Correct Wrong Correct        Over
+   DAL             Under Under Under    KAN  BUF  CAR      Dont Like        Do not like    Correct Wrong Wrong          Under
+   PHI             Over Over Over       BAL  SEA  PIT      No Opinion       Nutrual        Correct Correct Correct      Under
+   PHI             Over Over Over       SEA  PIT  LAC      No Opinion       Nutrual        Correct Correct Correct      Under
 
 ====================================================================
 """
@@ -88,3 +85,14 @@ if __name__ == '__main__':
     print "  Correct:", smasher_correct_total
     print "  Wrong:", smasher_wrong_total
     print "  Pushed:", smasher_pushed_total
+    
+    tt = 'TES'
+    tot = 'Over'
+    tp = 'DAL ATL PIT'
+    hrc = 'good'
+    hhd = 'won won won'
+    hh = 'Over'
+    
+    print "\n\nOn Streak | Type | Teams Played |  Coaching |  How Hary Did | What does Harry have"
+    print "%s\t   %s\t   %s\t   %s\t       %s\t  %s\t  " % (tt, tot, tp, hrc, hhd, hh)
+ 
