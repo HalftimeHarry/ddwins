@@ -35,12 +35,12 @@ if __name__ == '__main__':
  
     print "\nSeason: %s, Week: %s" % (season, week)
   
-      
-    streak_list = s.get_streak_list_for_season_week2(season, week)
-    print "Home team list for week:", week
+      # TO DO: create a get_streak_list_for_season_week(season, week)
+    streak_list = s.get_streak_list_for_season_week(season, week)
+    print "Streak list for week:", week
     print streak_list
   
-    print "Home team  Prediction  Predicted result  Actual total  Margin  Calc Avg  Vegas Line   Past or Pending"
+    print "Streak  Prediction  Predicted result  Actual total  Margin  Calc Avg  Vegas Line   Past or Pending"
     over_streak_cnt = 0
     under_streak_cnt = 0
      
@@ -49,9 +49,11 @@ if __name__ == '__main__':
     c = conn.cursor()
      
     for streak in streak_list:
+        
+        # TO DO: create a function called get_targeted_game_streak_details
         details2 = s.get_targeted_game_details23(streak, season, week)
           
-        #print "Home team:", streak
+        #print "Streak:", streak
         #print "details2:", details2
           
         #print "Predicted:",
