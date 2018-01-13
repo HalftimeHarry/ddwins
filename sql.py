@@ -388,7 +388,7 @@ class Sql:
         if db.endswith('.db'): # remove .db from database name
           db = db[:-3]
                 # cmd = 'SELECT Away_Team, Away_Score, Home_Team, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Season <= "' + season + '" AND Week <= "' + week + '" ORDER BY Date DESC LIMIT 8;'
-        cmd = 'SELECT Away_Team, Away_Score,Home_Team, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Season = "' + season + '" AND Week <= "' + week + '" ORDER BY Date DESC;'
+        cmd = 'SELECT Away_Team, Away_Score, Home_Team, Home_Score FROM ' + db + ' WHERE Season = "' + season + '" AND Week <= "' + week + '" ORDER BY Date DESC;'
         self.c.execute(cmd)
         rows = self.c.fetchall()
         for row in rows:
