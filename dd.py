@@ -33,6 +33,7 @@ class game_menu(cmd.Cmd):
         " 9). Targeted game details\n" + \
         "10). All game details\n" + \
         "11). Get home teams for season, week\n" + \
+        "12). Start logic for streaks\n" + \
         '   Select a number to choose an item or "Q" to quit.\n'
      
     #--------------------------------------
@@ -141,7 +142,19 @@ class game_menu(cmd.Cmd):
         for g in home_team_list:
             print g
         self.game_interactive_menu()
- 
+        
+    #--------------------------------------
+    # Start logic for streaks
+    #--------------------------------------
+    def do_12(self, line):
+        week = raw_input(" Start Week: ")
+        home_team = raw_input(" Home Team: ")
+        away_team = raw_input(" Away Team: ")
+        season = raw_input(" season: ")
+        streak_list = s.get_teams_on_streak(week, home_team, away_team, season)
+        for g in streak_list:
+            print g
+        self.game_interactive_menu()
     #--------------------------------------
     # Run
     #--------------------------------------
@@ -286,3 +299,5 @@ if __name__ == '__main__':
      
     s = sql.Sql('games.db')
     game_menu().cmdloop(' Enter a command:') 
+    
+    

@@ -18,7 +18,13 @@ c.execute('''CREATE TABLE IF NOT EXISTS game_results
               under_wrong_cnt int,
               did_not_play_cnt int,
               over_pushed_cnt int, 
-              under_pushed_cnt int
+              under_pushed_cnt int,
+              on_streak text,
+              streak_type text,
+              teams_played text,
+              coaching text,
+              how_harry_did text,
+              what_does_harry_have text
              )''')
               
  

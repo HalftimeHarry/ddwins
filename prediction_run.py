@@ -41,7 +41,7 @@ if __name__ == '__main__':
     conn = sqlite3.connect('game_results.db')
     c = conn.cursor() 
  
-    cmd = 'SELECT home_team, season, week, over_correct_cnt, under_correct_cnt, over_wrong_cnt, under_wrong_cnt, did_not_play_cnt, over_pushed_cnt, under_pushed_cnt FROM game_results;'
+    cmd = 'SELECT home_team, season, week, over_correct_cnt, under_correct_cnt, over_wrong_cnt, under_wrong_cnt, did_not_play_cnt, over_pushed_cnt, under_pushed_cnt, on_streak, streak_type, teams_played, coaching, how_harry_did, what_does_harry_have FROM game_results;'
     print cmd
     c.execute(cmd)
     rows = c.fetchall()
@@ -58,6 +58,14 @@ if __name__ == '__main__':
         passed = row[7]
         over_pushed = row[8] 
         under_pushed = row[9]
+        
+        test_on_streak = row[10]
+        
+        
+        
+        
+        
+        print "\nOn Streak Test:", test_on_streak        
         print "\nSeason:", season
         print "Week:", week
 #        print "over correct this week", over_correct
@@ -86,7 +94,7 @@ if __name__ == '__main__':
     print "  Wrong:", smasher_wrong_total
     print "  Pushed:", smasher_pushed_total
     
-    tt = 'TES'
+    tt = 'DAL'
     tot = 'Over'
     tp = 'DAL ATL PIT'
     hrc = 'good'

@@ -216,7 +216,7 @@ class Sql:
         #print "len:", len(score_list)
         score_list = score_list[0:8] # Only use the prior 8 games
         score_list_b = b[1:9] # Only use the prior 8 games and this will exclude the 1st score
-        print score_list_b
+    #    print score_list_b
          
         sum = 0
         for score in score_list_b:
@@ -375,6 +375,27 @@ class Sql:
  
     def set_number_of_prior_games(self):
         self.number_of_prior_games = raw_input(" Enter number of prior games: ")
+        
+    def get_teams_on_streak(self, week, season):
+        '''
+        Return a list of teams who have streaked more than 2 it needs to look at both
+        home and away going backwards from the end week 
+        and compare all to the vegas total to the actual_total score we call it the o_u_total
+        '''
+        
+        streak_list = []
+        db = self.get_db_name()
+        if db.endswith('.db'): # remove .db from database name
+          db = db[:-3]
+                # cmd = 'SELECT Away_Team, Away_Score, Home_Team, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Season <= "' + season + '" AND Week <= "' + week + '" ORDER BY Date DESC LIMIT 8;'
+        cmd = 'SELECT Away_Team, Away_Score,Home_Team, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Season = "' + season + '" AND Week <= "' + week + '" ORDER BY Date DESC;'
+        self.c.execute(cmd)
+        rows = self.c.fetchall()
+        for row in rows:
+            streak_list.append(row)
+ 
+        return streak_list
+ 
  
     def run(self):
         pass
