@@ -147,10 +147,8 @@ class game_menu(cmd.Cmd):
     # Start logic for streaks
     #--------------------------------------
     def do_12(self, line):
-        week = raw_input(" Start Week: ")
-        season = raw_input(" Season: ")
-        streak_list = s.get_teams_on_streak_list(season, week)
-        for g in streak_list:
+        game_list = s.get_teams_scores_ou_total_within_time_range(s.start_date, s.end_date)
+        for g in game_list:
             print g
         self.game_interactive_menu()
     #--------------------------------------

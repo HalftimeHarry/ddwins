@@ -72,8 +72,8 @@ class Sql:
         self.db = db
         self.home_team = 'DAL'
         self.away_team = 'Not set'
-        self.week = 'Not set'
-        self.season = 'Not set'
+        self.week = '5'
+        self.season = '2017'
         self.venue = 'Not set'
         self.start_date = '2015-11-01'
         self.end_date = '2016-10-30'
@@ -376,34 +376,28 @@ class Sql:
     def set_number_of_prior_games(self):
         self.number_of_prior_games = raw_input(" Enter number of prior games: ")
         
-    def get_teams_on_streak_list(self, week, season):
-        '''
-        Return a list of teams who have streaked more than 2 it needs to look at both
-        the home and away teams then I want it to loop backwards from the end week 
-        and compare all the vegas o_u_total's to the actual_total's score if sucsessful 
-        this list will contain teams who are on a over or under streak
-        
-        '''
-        
-        streak_list = []
+    def get_teams_on_streak_list(self, season, week):
+        game_list = []
         db = self.get_db_name()
         if db.endswith('.db'): # remove .db from database name
-          db = db[:-3]
-                # cmd = 'SELECT Away_Team, Away_Score, Home_Team, Home_Score FROM ' + db + ' WHERE Home_Team = "' + home_team  + '" AND Season <= "' + season + '" AND Week <= "' + week + '" ORDER BY Date DESC LIMIT 8;'
-        cmd = 'SELECT Away_Team, Away_Score, Home_Team, Home_Score, Closing_O_U_Total FROM ' + db + ' WHERE Season = "' + season + '" AND Week <= "' + week + '" ORDER BY Week DESC;'
+            db = db[:-3]
+ 
+        cmd = 'SELECT Date, Away_Team, Away_Score, Home_Team, Home_Score, Closing_O_U_Total FROM ' + db + ' WHERE Season >= "' + season + '" AND Week <= "' + week + '";'
+        print cmd
         self.c.execute(cmd)
         rows = self.c.fetchall()
         for row in rows:
-            streak_list.append(row)
-        return streak_list
+            game_list.append(row)
+ 
+        return game_list
         
     def get_targeted_game_streak_details(self, week, season):
         '''Read from games.db to get targeted game details
            and return all the streaks'''
            
-        streaks = self.get_teams_on_streak_list(week, season)
+#        streaks = self.get_teams_on_streak_list(week, season)
 #        ou_total = self.get_closing_ou_total(home_team, end_date)
-        print "average:", streaks
+#        print "average:", streaks
  
     def run(self):
         pass

@@ -37,7 +37,8 @@ if __name__ == '__main__':
   
       # TO DO: create a get_teams_on_streak_list(season, week)
     streak_list = s.get_teams_on_streak_list(season, week)
-#    print "Streak list for week:", week
+#    streak_list = ('DAL','KAN')
+    print "Streak list for week:", week
     print streak_list
   
     print "Streak  Prediction  Predicted result  Actual total  Margin  Calc Avg  Vegas Line   Past or Pending"
