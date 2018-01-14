@@ -148,10 +148,8 @@ class game_menu(cmd.Cmd):
     #--------------------------------------
     def do_12(self, line):
         week = raw_input(" Start Week: ")
-        home_team = raw_input(" Home Team: ")
-        away_team = raw_input(" Away Team: ")
-        season = raw_input(" season: ")
-        streak_list = s.get_teams_on_streak(week, home_team, away_team, season)
+        season = raw_input(" Season: ")
+        streak_list = s.get_teams_on_streak_list(season, week)
         for g in streak_list:
             print g
         self.game_interactive_menu()
