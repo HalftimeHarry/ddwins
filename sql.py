@@ -382,7 +382,7 @@ class Sql:
         if db.endswith('.db'): # remove .db from database name
             db = db[:-3]
  
-        cmd = 'SELECT Date, Away_Team, Away_Score, Home_Team, Home_Score, Closing_O_U_Total FROM ' + db + ' WHERE Season >= "' + season + '" AND Week <= "' + week + '";'
+        cmd = 'SELECT Date, Away_Team, Away_Score, Home_Team, Home_Score, Closing_O_U_Total FROM ' + db + ' WHERE Season >= "' + season + '" AND Week <= "' + week + '" ORDER BY Date DESC;'
         print cmd
         self.c.execute(cmd)
         rows = self.c.fetchall()
@@ -391,13 +391,13 @@ class Sql:
  
         return game_list
         
-    def get_targeted_game_streak_details(self, week, season):
+    def get_targeted_game_streak_details(self, season, week):
         '''Read from games.db to get targeted game details
-           and return all the streaks'''
+           and return all the streaks start with over and use DAL'''
            
-#        streaks = self.get_teams_on_streak_list(week, season)
+        possible_streaks = self.get_teams_on_streak_list(season, week)
 #        ou_total = self.get_closing_ou_total(home_team, end_date)
-#        print "average:", streaks
+        print "Away Team", possible_streaks[2]
  
     def run(self):
         pass

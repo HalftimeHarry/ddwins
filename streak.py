@@ -4,6 +4,7 @@ import datetime
 import time
 import argparse
 import sqlite3
+from collections import OrderedDict
   
 PRED_GEN_VERSION = '0.5'
   
@@ -37,13 +38,13 @@ if __name__ == '__main__':
   
       # TO DO: create a get_teams_on_streak_list(season, week)
     streak_list = s.get_teams_on_streak_list(season, week)
-#    streak_list = ('DAL','KAN')
+
     print "Streak list for week:", week
-    print streak_list
+#    print streak_list
   
     print "Streak  Prediction  Predicted result  Actual total  Margin  Calc Avg  Vegas Line   Past or Pending"
-    over_streak_cnt = 0
-    under_streak_cnt = 0
+    kan_over_streak_cnt = 0
+    kan_under_streak_cnt = 0
      
     conn = sqlite3.connect('game_results.db')
  
@@ -52,30 +53,29 @@ if __name__ == '__main__':
     for streak in streak_list:
         
         # TO DO: create a function called get_targeted_game_streak_details
-        details2 = s.get_targeted_game_streak_details(season, week)
-          
-        #print "Streak:", streak
-        #print "details2:", details2
-          
+        #details2 = s.get_targeted_game_streak_details(away_team, away_score, home_team, home_team_score, vegas_total)
+
+        away = streak[1]
+        home = streak[3]
+
         #print "Predicted:",
-        if details2['margin'] > 0:
-            prediction = "Over"
-        elif details2['margin'] < 0:
-            prediction = "Under"
-        else:
-            prediction = "Dont play"
-   
-        predicted_result = "No Action"
- #       print "Predicted:",
-  
-        streaking_team = 'The streaking team'
+        if away == "KAN":
+         aw_gm_list = streak
+        if home == "KAN":
+         hm_gm_list = streak
+         
+         print aw_gm_list
+         print hm_gm_list
+         
+         
+         
   
  #here is where I start trying to add this in the database testing 
-        if details2['home_team'] != 0:
-            on_streak_text = "Is on a streak!"
-            on_streak = streaking_team
+#        if details2['home_team'] != 0:
+#            on_streak_text = "Is on a streak!"
+#            on_streak = streaking_team
          
-        print()
+#        print()
   
 #        print "   %s\t     %s\t %s\t      %d\t%02.1f\t %02.1f\t    %02.1f         %s" % (streak, prediction, predicted_result, details2['actual_total'], details2['margin'], details2['average'], details2['ou_total'], final_result)
  
